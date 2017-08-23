@@ -37,6 +37,7 @@ content/cache/
 content/uploads/
 content/upgrade/
 content/wp-cache-config.php
+content/plugin/jetpack-markdown/
 =======
 *.log
 wp-config.php

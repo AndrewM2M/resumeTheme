@@ -1,4 +1,18 @@
 <?php
+/*
+Plugin Name: resu_ME
+Plugin URI: 
+Description: TO help a wordpress reusme site
+Version: 1
+Author: Andrew White
+Author URI: 
+License: MIT
+*/
+$plugin_path = plugin_dir_path(__file__);
+require_once ($plugin_path . "/inc/class/m2m_resu_ME.php");
+
+$resu_ME = new m2m_resu_ME($plugin_path);
+
 if ( ! function_exists('m2m_resume_post_type') ) {
 
 // Register Custom Post Type
@@ -161,10 +175,6 @@ function m2m_render_part($id, $cust_feild_name, $custom_array = ['default']){
         
     endwhile;
 		wp_reset_postdata();
-	} else 
-		echo "nope";
-	
-	
-	
+	}
 }
 ?>

@@ -53,12 +53,11 @@
 	<div class="entry-content">
 		<?php
 		/* translators: %s: Name of current post */
-		get_post_type() === 'resume' ? m2m_render_part(get_the_ID(),"skillList") : false;
 		the_content( sprintf(
 			__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'twentyseventeen' ),
 			get_the_title()
 		) );
-
+		get_post_type() === 'resume' ? m2m_render_part(get_the_ID(),"skillList") : false;
 		wp_link_pages( array(
 			'before'      => '<div class="page-links">' . __( 'Pages:', 'twentyseventeen' ),
 			'after'       => '</div>',

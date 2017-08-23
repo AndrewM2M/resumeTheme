@@ -11,6 +11,6 @@ function twentyseventeen_child_enqueue_styles() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'twentyseventeen_child_enqueue_styles' );
-require get_theme_file_path() . "/inc/resume-function.php";
+
 
 ?>
