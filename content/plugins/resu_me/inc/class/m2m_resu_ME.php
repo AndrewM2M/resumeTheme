@@ -1,35 +1,54 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-//require ("m2m_posttypes.php");
+require_once ("m2m_cust_posts.php");
 class m2m_resu_ME {
+  
+  protected $path;
+  protected $labels = array(
+      'singular_name' => 'Resume'
+    
+      );
+     protected $args = array(
+        'description'           => 'Master Post to hold the Resume together',
+        'supports'              => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'revisions', 'custom-fields', 'page-attributes', 'post-formats', 'wpcom-markdown'),
+        'taxonomies'            => array( 'Resumes' ),
+        'hierarchical'          => false,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 5,
+        'menu_icon'							=> 'dashicons-format-aside',
+        'show_in_admin_bar'     => true,
+        'show_in_nav_menus'     => true,
+        'can_export'            => true,
+        'has_archive'           => true,		
+        'exclude_from_search'   => false,
+        'publicly_queryable'    => true,
+        'capability_type'       => 'page',
+      );
+  protected $specs = array ();
+      
   function __construct($plugin_path) {
     $this->path = $plugin_path;
-     /* all the ini hooks go here */
-    add_action( 'init', array($this,'m2m_resume_post_type'), 0 );
+    $this->specs = array (
+    'resumes' => array('labels' =>$this->labels,
+                       'args' => $this->args,
+                      'hook' => "init")
+     );
+    m2m_cust_posts::build_cpt($this->specs);
+    
+    add_action( 'init', array($this, 'm2m_resume_post_type'), 0 );
     add_action( 'init', array($this,'m2m_skill_post_type'), 0 );
     add_action('init', array($this, 'm2m_taxonomy_skillList'));
-    $addargs = array(
-    "int" => array("m2m","m2m1","m2m2")
-    );
-    $this->m2m_add_all($addargs);
-    
+
    } //__constuctor
   //TODO: build a "add_action privte methiod"
   
-  private function m2m_add_all($args) {
-    foreach ($args as $hooks => $tags) {
-      echo "<pre>".$hooks.": ";
-        foreach ($tags as $t){
-          echo $t . ", ";
-        }
-      echo "</pre>";
-    }
-  }
+ 
   
   //TODO: build a "post_type facotry (maybe a different class file)  
   
   function m2m_resume_post_type() {
-
       $labels = array(
         'name'                  => 'Resumes',
         'singular_name'         => 'Resume',
@@ -77,8 +96,8 @@ class m2m_resu_ME {
       );
       register_post_type( 'resume', $args );
   }
-function m2m_skill_post_type() {
 
+function m2m_skill_post_type() {
 	$labels = array(
 		'name'                  => 'Skills',
 		'singular_name'         => 'Skill',
@@ -120,29 +139,28 @@ function m2m_skill_post_type() {
 	register_post_type( 'skill', $args );
 
 }
-function m2m_taxonomy_skillList()
-{
+  function m2m_taxonomy_skillList(){
     $labels = [
-        'name'              => _x('Skill lists', 'taxonomy general name'),
-'singular_name'     => _x('Skill list', 'taxonomy singular name'),
-'search_items'      => __('Search Skill lists'),
-'all_items'         => __('All Skill lists'),
-'parent_item'       => __('Parent Skill list'),
-'parent_item_colon' => __('Parent Skill list:'),
-'edit_item'         => __('Edit Skill list'),
-'update_item'       => __('Update Skill list'),
-'add_new_item'      => __('Add New Skill list'),
-'new_item_name'     => __('New Skill list Name'),
-];
-$args = [
-'hierarchical'      => true, // make it hierarchical (like categories)
-'labels'            => $labels,
-'show_ui'           => true,
-'show_admin_column' => true,
-'query_var'         => true,
-'rewrite'           => ['slug' => 'skill_list'],
-];
-register_taxonomy('skillList', ['skill'], $args);
-}
+      'name'              => _x('Skill lists', 'taxonomy general name'),
+      'singular_name'     => _x('Skill list', 'taxonomy singular name'),
+      'search_items'      => __('Search Skill lists'),
+      'all_items'         => __('All Skill lists'),
+      'parent_item'       => __('Parent Skill list'),
+      'parent_item_colon' => __('Parent Skill list:'),
+      'edit_item'         => __('Edit Skill list'),
+      'update_item'       => __('Update Skill list'),
+      'add_new_item'      => __('Add New Skill list'),
+      'new_item_name'     => __('New Skill list Name'),
+      ];
+    $args = [
+      'hierarchical'      => true, // make it hierarchical (like categories)
+      'labels'            => $labels,
+      'show_ui'           => true,
+      'show_admin_column' => true,
+      'query_var'         => true,
+      'rewrite'           => ['slug' => 'skill_list'],
+      ];
+    register_taxonomy('skillList', ['skill'], $args);
+  }
 }
 ?>
