@@ -3,11 +3,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class m2m_cust_posts {
   
   protected $action_callbacks = array(); 
+  public $good_specs;
   
   static function build_cpt($specs){ //do not pass the lables array in the args array
     /* TODO: autobuild taxonomy option
     */
     $raw_specs = $specs;
+    
     
     function proccess_spec($raw){
     foreach ($raw as $cpt_name => $details){
@@ -50,7 +52,7 @@ class m2m_cust_posts {
                 }
                   $details['args'] = $setting;
               break;
-          default: echo "err: no settings";
+          default: error_log( "err: no settings");
           }
           return $raw;
         }else{
@@ -61,7 +63,8 @@ class m2m_cust_posts {
     }
    }// end process_spec
     $good_specs = proccess_spec($raw_specs);
-    print_r($good_specs);
+    return $good_specs;
+    //print_r($good_specs);
   }
   
 }

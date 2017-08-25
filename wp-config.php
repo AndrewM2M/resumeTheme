@@ -110,7 +110,9 @@ if (!defined('WP_CONTENT_URL')) {
  */
 if (!defined('WP_DEBUG')) {
 	define('WP_DEBUG', true);
+	define( 'WP_DEBUG_LOG', true );
 	define( 'WP_DEBUG_DISPLAY', true );
+	ini_set('display_errors', 1);
 }
 
 /* That's all, stop editing! Happy blogging. */

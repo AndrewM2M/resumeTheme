@@ -4,43 +4,29 @@ require_once ("m2m_cust_posts.php");
 class m2m_resu_ME {
   
   protected $path;
-  /*protected $labels = array(
-      'singular_name' => 'Resume'
-    
-      );
-     protected $args = array(
-        'description'           => 'Master Post to hold the Resume together',
-        'supports'              => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'revisions', 'custom-fields', 'page-attributes', 'post-formats', 'wpcom-markdown'),
-        'taxonomies'            => array( 'Resumes' ),
-        'hierarchical'          => false,
-        'public'                => true,
-        'show_ui'               => true,
-        'show_in_menu'          => true,
-        'menu_position'         => 5,
-        'menu_icon'							=> 'dashicons-format-aside',
-        'show_in_admin_bar'     => true,
-        'show_in_nav_menus'     => true,
-        'can_export'            => true,
-        'has_archive'           => true,		
-        'exclude_from_search'   => false,
-        'publicly_queryable'    => true,
-        'capability_type'       => 'page',
-      );*/
   protected $specs = array ();
   
   function __construct($plugin_path) {
     
     $this->plugin_path = $plugin_path;
-    $cpt = "resumes";
-    /*$this->specs = array (
-    $cpt => array('labels' =>$this->labels,
-                       'args' => $this->args,
-                      'hook' => "init")
-     );*/
-    //file_put_contents(__dir__."/cpt_".$cpt."_specs.json",json_encode($this->specs));
-    $this->specs = json_decode(file_get_contents(__dir__."/cpt_".$cpt."_specs.json"),true);
-    m2m_cust_posts::build_cpt($this->specs);
+    $m2m_cpts = array('resumes','achivements','experiences','skills','qulifictions'); //list of type files to look for
+    $m2m_specs_path = __dir__."/cpt_%s_specs.json";
     
+		foreach ($m2m_cpts as $types){ //load the specs from the files
+      $file = sprintf($m2m_specs_path,$types);
+      if (file_exists($file)){
+				$rFile = json_decode(file_get_contents($file),true);
+        $this->specs = array_merge($this->specs, $rFile);    
+      }else{
+        error_log('no JSON file: "'.$file.'"');
+      }
+    }
+    
+		//process the specs
+    $m2m_toAdd = m2m_cust_posts::build_cpt($this->specs);
+		print_r($m2m_toAdd);
+		
+		
     add_action( 'init', array($this, 'm2m_resume_post_type'), 0 );
     add_action( 'init', array($this,'m2m_skill_post_type'), 0 );
     add_action('init', array($this, 'm2m_taxonomy_skillList'));
@@ -166,5 +152,43 @@ function m2m_skill_post_type() {
       ];
     register_taxonomy('skillList', ['skill'], $args);
   }
-}
+	
+	private function write_specs($spec_name,$singular_name,$description){
+		$file = __dir__.'/cpt_'.$spec_name.'_specs.json';
+		$labels = array(
+			'singular_name'         => $singular_name,
+		);
+		$args = array(
+			'description'           => $description,
+			'supports'              => array( 'title', 'editor', 'excerpt', 'author', 'revisions', 'custom-fields', 'wpcom-markdown'),
+			'taxonomies'            => array( 'Skills' ),
+			'hierarchical'          => false,
+			'public'                => false,
+			'show_ui'               => true,
+			'show_in_menu'          => true,
+			'menu_position'         => 6,
+			'menu_icon'							=> 'dashicons-editor-ul',
+			'show_in_admin_bar'     => true,
+			'show_in_nav_menus'     => false,
+			'can_export'            => true,
+			'has_archive'           => false,		
+			'exclude_from_search'   => true,
+			'publicly_queryable'    => false,
+			'capability_type'       => 'page',
+		);
+		$specs = array(
+			$spec_name => array(
+					'labels' => $labels,
+					'args'	=> $args,
+					'hook'	=> 'init'
+			)
+		);
+		if (!file_exists($file)){
+			$toWrite = json_encode($specs,JSON_PRETTY_PRINT);
+			file_put_contents($file,$toWrite);
+		}else{
+			error_log($file.' already exists');
+		}
+	}
+}// end of class
 ?>
