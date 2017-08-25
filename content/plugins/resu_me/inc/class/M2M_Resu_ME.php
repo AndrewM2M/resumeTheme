@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-require_once ("m2m_cust_posts.php");
-class m2m_resu_ME {
+require_once ("M2M_Cust_Posts.php");
+class M2M_Resu_ME {
   
   protected $path;
   protected $specs = array ();
@@ -23,9 +23,8 @@ class m2m_resu_ME {
     }
     
 		//process the specs
-    $m2m_toAdd = m2m_cust_posts::build_cpt($this->specs);
-		print_r($m2m_toAdd);
-		
+    $m2m_builtCpt = new M2M_Cust_Posts($this->specs);
+		//M2M_Cust_Posts::m2m_add_actions();
 		
     add_action( 'init', array($this, 'm2m_resume_post_type'), 0 );
     add_action( 'init', array($this,'m2m_skill_post_type'), 0 );
@@ -87,7 +86,7 @@ class m2m_resu_ME {
       register_post_type( 'resume', $args );
   }
 
-function m2m_skill_post_type() {
+	function m2m_skill_post_type() {
 	$labels = array(
 		'name'                  => 'Skills',
 		'singular_name'         => 'Skill',
@@ -190,5 +189,6 @@ function m2m_skill_post_type() {
 			error_log($file.' already exists');
 		}
 	}
+	
 }// end of class
 ?>

@@ -1,18 +1,17 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-class m2m_cust_posts {
+class M2M_Cust_Posts {
   
   protected $action_callbacks = array(); 
   public $good_specs;
   
-  static function build_cpt($specs){ //do not pass the lables array in the args array
+  function __construct($specs){ //do not pass the lables array in the args array
     /* TODO: autobuild taxonomy option
     */
     $raw_specs = $specs;
     
-    
     function proccess_spec($raw){
-    foreach ($raw as $cpt_name => $details){
+      foreach ($raw as $cpt_name => $details){
       $has_labels = 0;
       foreach ($details as $key => $setting){
         if (is_array($setting)){        
@@ -62,11 +61,28 @@ class m2m_cust_posts {
       }
     }
    }// end process_spec
-    $good_specs = proccess_spec($raw_specs);
-    return $good_specs;
+    $this->good_specs = proccess_spec($raw_specs);
+    $this->m2m_add_actions();
     //print_r($good_specs);
   }
   
+  protected function m2m_add_actions($actions=""){
+    if ($actions === ""){
+      if ($this->good_specs){
+        $hooks = array();
+        foreach ($this->good_specs as $feilds){
+          array_push ($hooks,$feilds['hook']);
+        }
+      }else{
+          $err = "no good_specs";
+      };
+	  };      
+  }
+  
+  
+  public function m2m_actions_responder(){
+    //$this->good_specs
+  }
 }
 
 ?>

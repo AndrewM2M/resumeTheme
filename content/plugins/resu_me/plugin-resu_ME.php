@@ -9,9 +9,9 @@ Author URI:
 License: MIT
 */
 $plugin_path = plugin_dir_path(__file__);
-require_once ($plugin_path . "/inc/class/m2m_resu_ME.php");
+require_once ($plugin_path . "/inc/class/M2M_Resu_ME.php");
 
-$resu_ME = new m2m_resu_ME($plugin_path);
+$resu_ME = new M2M_Resu_ME($plugin_path);
 
 
 // Add Shortcode
