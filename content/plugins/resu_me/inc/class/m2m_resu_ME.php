@@ -4,7 +4,7 @@ require_once ("m2m_cust_posts.php");
 class m2m_resu_ME {
   
   protected $path;
-  protected $labels = array(
+  /*protected $labels = array(
       'singular_name' => 'Resume'
     
       );
@@ -25,16 +25,20 @@ class m2m_resu_ME {
         'exclude_from_search'   => false,
         'publicly_queryable'    => true,
         'capability_type'       => 'page',
-      );
+      );*/
   protected $specs = array ();
-      
+  
   function __construct($plugin_path) {
-    $this->path = $plugin_path;
-    $this->specs = array (
-    'resumes' => array('labels' =>$this->labels,
+    
+    $this->plugin_path = $plugin_path;
+    $cpt = "resumes";
+    /*$this->specs = array (
+    $cpt => array('labels' =>$this->labels,
                        'args' => $this->args,
                       'hook' => "init")
-     );
+     );*/
+    //file_put_contents(__dir__."/cpt_".$cpt."_specs.json",json_encode($this->specs));
+    $this->specs = json_decode(file_get_contents(__dir__."/cpt_".$cpt."_specs.json"),true);
     m2m_cust_posts::build_cpt($this->specs);
     
     add_action( 'init', array($this, 'm2m_resume_post_type'), 0 );
