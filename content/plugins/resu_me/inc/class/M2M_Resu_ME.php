@@ -1,44 +1,46 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-require_once ("M2M_Cust_Posts.php");
-class M2M_Resu_ME {
-  
-  protected $path;
-  protected $specs = array ();
-  
-  function __construct($plugin_path) {
-    
-    $this->plugin_path = $plugin_path;
-    $m2m_cpts = array('resumes','achivements','experiences','skills','qulifictions'); //list of type files to look for
-    $m2m_specs_path = __dir__."/cpt_%s_specs.json";
-    
-		foreach ($m2m_cpts as $types){ //load the specs from the files
-      $file = sprintf($m2m_specs_path,$types);
-      if (file_exists($file)){
-				$rFile = json_decode(file_get_contents($file),true);
-        $this->specs = array_merge($this->specs, $rFile);    
-      }else{
-        error_log('no JSON file: "'.$file.'"');
-      }
-    }
-    
-		//process the specs
-    $m2m_builtCpt = new M2M_Cust_Posts($this->specs);
-		//M2M_Cust_Posts::m2m_add_actions();
-		
-    add_action( 'init', array($this, 'm2m_resume_post_type'), 0 );
-    add_action( 'init', array($this,'m2m_skill_post_type'), 0 );
-    add_action('init', array($this, 'm2m_taxonomy_skillList'));
+if (! defined('ABSPATH')) {
+    exit;
+} // Exit if accessed directly
+require_once("M2M_Cust_Posts.php");
+class M2M_Resu_ME
+{
+    protected $path;
+    protected $specs = array();
 
-   } //__constuctor
-  //TODO: build a "add_action privte methiod"
-  
- 
-  
-  //TODO: build a "post_type facotry (maybe a different class file)  
-  
-  function m2m_resume_post_type() {
-      $labels = array(
+    public function __construct($plugin_path)
+    {
+        $this->plugin_path = $plugin_path;
+        $m2m_cpts = array('resumes','achivements','experiences','skills','qulifictions'); //list of type files to look for
+        $m2m_specs_path = __dir__."/cpt_%s_specs.json";
+
+        foreach ($m2m_cpts as $types) { //load the specs from the files
+            $file = sprintf($m2m_specs_path, $types);
+            if (file_exists($file)) {
+                $rFile = json_decode(file_get_contents($file), true);
+                $this->specs = array_merge($this->specs, $rFile);
+            } else {
+                error_log('no JSON file: "'.$file.'"');
+            }
+        }
+
+        //process the specs
+        $m2m_builtCpt = new M2M_Cust_Posts($this->specs);
+        //M2M_Cust_Posts::m2m_add_actions();
+
+        add_action('init', array($this, 'm2m_resume_post_type'), 0);
+        add_action('init', array($this,'m2m_skill_post_type'), 0);
+        add_action('init', array($this, 'm2m_taxonomy_skillList'));
+    } //__constuctor
+    //TODO: build a "add_action privte methiod"
+
+
+
+    //TODO: build a "post_type facotry (maybe a different class file)
+
+    public function m2m_resume_post_type()
+    {
+        $labels = array(
         'name'                  => 'Resumes',
         'singular_name'         => 'Resume',
         'archives'              => 'Item Archives',
@@ -63,7 +65,7 @@ class M2M_Resu_ME {
         'items_list_navigation' => 'Items list navigation',
         'filter_items_list'     => 'Filter items list',
       );
-      $args = array(
+        $args = array(
         'label'                 => 'Resume',
         'description'           => 'Master Post to hold the Resume together',
         'labels'                => $labels,
@@ -74,62 +76,63 @@ class M2M_Resu_ME {
         'show_ui'               => true,
         'show_in_menu'          => true,
         'menu_position'         => 5,
-        'menu_icon'							=> 'dashicons-format-aside',
+        'menu_icon'                            => 'dashicons-format-aside',
         'show_in_admin_bar'     => true,
         'show_in_nav_menus'     => true,
         'can_export'            => true,
-        'has_archive'           => true,		
+        'has_archive'           => true,
         'exclude_from_search'   => false,
         'publicly_queryable'    => true,
         'capability_type'       => 'page',
       );
-      register_post_type( 'resume', $args );
-  }
+        register_post_type('resume', $args);
+    }
 
-	function m2m_skill_post_type() {
-	$labels = array(
-		'name'                  => 'Skills',
-		'singular_name'         => 'Skill',
-		'attributes'            => 'Item Attributes',
-		'parent_item_colon'     => 'Skills:',
-		'all_items'             => 'All Skills',
-		'add_new_item'          => 'Add New Skill',
-		'add_new'               => 'Add Skill',
-		'new_item'              => 'New Skill',
-		'edit_item'             => 'Edit Skill',
-		'update_item'           => 'Update Skill',
-		'view_item'             => 'View Skill',
-		'view_items'            => 'View Skills',
-		'search_items'          => 'Search Skill',
-		'items_list'            => 'Skills list',
-		'items_list_navigation' => 'Skills list navigation',
-		'filter_items_list'     => 'Filter Skills list',
-	);
-	$args = array(
-		'label'                 => 'Skill',
-		'description'           => 'A Skill to be displaied on resumes',
-		'labels'                => $labels,
-		'supports'              => array( 'title', 'editor', 'excerpt', 'author', 'revisions', 'custom-fields', 'wpcom-markdown'),
-		'taxonomies'            => array( 'Skills' ),
-		'hierarchical'          => false,
-		'public'                => false,
-		'show_ui'               => true,
-		'show_in_menu'          => true,
-		'menu_position'         => 6,
-		'menu_icon'							=> 'dashicons-editor-ul',
-		'show_in_admin_bar'     => true,
-		'show_in_nav_menus'     => false,
-		'can_export'            => true,
-		'has_archive'           => false,		
-		'exclude_from_search'   => true,
-		'publicly_queryable'    => false,
-		'capability_type'       => 'page',
-	);
-	register_post_type( 'skill', $args );
-
-}
-  function m2m_taxonomy_skillList(){
-    $labels = [
+    public function m2m_skill_post_type()
+    {
+        $labels = array(
+        'name'                  => 'Skills',
+        'singular_name'         => 'Skill',
+        'attributes'            => 'Item Attributes',
+        'parent_item_colon'     => 'Skills:',
+        'all_items'             => 'All Skills',
+        'add_new_item'          => 'Add New Skill',
+        'add_new'               => 'Add Skill',
+        'new_item'              => 'New Skill',
+        'edit_item'             => 'Edit Skill',
+        'update_item'           => 'Update Skill',
+        'view_item'             => 'View Skill',
+        'view_items'            => 'View Skills',
+        'search_items'          => 'Search Skill',
+        'items_list'            => 'Skills list',
+        'items_list_navigation' => 'Skills list navigation',
+        'filter_items_list'     => 'Filter Skills list',
+    );
+        $args = array(
+        'label'                 => 'Skill',
+        'description'           => 'A Skill to be displaied on resumes',
+        'labels'                => $labels,
+        'supports'              => array( 'title', 'editor', 'excerpt', 'author', 'revisions', 'custom-fields', 'wpcom-markdown'),
+        'taxonomies'            => array( 'Skills' ),
+        'hierarchical'          => false,
+        'public'                => false,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 6,
+        'menu_icon'                            => 'dashicons-editor-ul',
+        'show_in_admin_bar'     => true,
+        'show_in_nav_menus'     => false,
+        'can_export'            => true,
+        'has_archive'           => false,
+        'exclude_from_search'   => true,
+        'publicly_queryable'    => false,
+        'capability_type'       => 'page',
+    );
+        register_post_type('skill', $args);
+    }
+    public function m2m_taxonomy_skillList()
+    {
+        $labels = [
       'name'              => _x('Skill lists', 'taxonomy general name'),
       'singular_name'     => _x('Skill list', 'taxonomy singular name'),
       'search_items'      => __('Search Skill lists'),
@@ -141,7 +144,7 @@ class M2M_Resu_ME {
       'add_new_item'      => __('Add New Skill list'),
       'new_item_name'     => __('New Skill list Name'),
       ];
-    $args = [
+        $args = [
       'hierarchical'      => true, // make it hierarchical (like categories)
       'labels'            => $labels,
       'show_ui'           => true,
@@ -149,46 +152,45 @@ class M2M_Resu_ME {
       'query_var'         => true,
       'rewrite'           => ['slug' => 'skill_list'],
       ];
-    register_taxonomy('skillList', ['skill'], $args);
-  }
-	
-	private function write_specs($spec_name,$singular_name,$description){
-		$file = __dir__.'/cpt_'.$spec_name.'_specs.json';
-		$labels = array(
-			'singular_name'         => $singular_name,
-		);
-		$args = array(
-			'description'           => $description,
-			'supports'              => array( 'title', 'editor', 'excerpt', 'author', 'revisions', 'custom-fields', 'wpcom-markdown'),
-			'taxonomies'            => array( 'Skills' ),
-			'hierarchical'          => false,
-			'public'                => false,
-			'show_ui'               => true,
-			'show_in_menu'          => true,
-			'menu_position'         => 6,
-			'menu_icon'							=> 'dashicons-editor-ul',
-			'show_in_admin_bar'     => true,
-			'show_in_nav_menus'     => false,
-			'can_export'            => true,
-			'has_archive'           => false,		
-			'exclude_from_search'   => true,
-			'publicly_queryable'    => false,
-			'capability_type'       => 'page',
-		);
-		$specs = array(
-			$spec_name => array(
-					'labels' => $labels,
-					'args'	=> $args,
-					'hook'	=> 'init'
-			)
-		);
-		if (!file_exists($file)){
-			$toWrite = json_encode($specs,JSON_PRETTY_PRINT);
-			file_put_contents($file,$toWrite);
-		}else{
-			error_log($file.' already exists');
-		}
-	}
-	
+        register_taxonomy('skillList', ['skill'], $args);
+    }
+
+    private function write_specs($spec_name, $singular_name, $description)
+    {
+        $file = __dir__.'/cpt_'.$spec_name.'_specs.json';
+        $labels = array(
+            'singular_name'         => $singular_name,
+        );
+        $args = array(
+            'description'           => $description,
+            'supports'              => array( 'title', 'editor', 'excerpt', 'author', 'revisions', 'custom-fields', 'wpcom-markdown'),
+            'taxonomies'            => array( 'Skills' ),
+            'hierarchical'          => false,
+            'public'                => false,
+            'show_ui'               => true,
+            'show_in_menu'          => true,
+            'menu_position'         => 6,
+            'menu_icon'                            => 'dashicons-editor-ul',
+            'show_in_admin_bar'     => true,
+            'show_in_nav_menus'     => false,
+            'can_export'            => true,
+            'has_archive'           => false,
+            'exclude_from_search'   => true,
+            'publicly_queryable'    => false,
+            'capability_type'       => 'page',
+        );
+        $specs = array(
+            $spec_name => array(
+                    'labels' => $labels,
+                    'args'    => $args,
+                    'hook'    => 'init'
+            )
+        );
+        if (!file_exists($file)) {
+            $toWrite = json_encode($specs, JSON_PRETTY_PRINT);
+            file_put_contents($file, $toWrite);
+        } else {
+            error_log($file.' already exists');
+        }
+    }
 }// end of class
-?>
