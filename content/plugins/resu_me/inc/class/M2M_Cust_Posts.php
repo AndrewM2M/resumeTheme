@@ -63,7 +63,6 @@ class M2M_Cust_Posts
         }// end process_spec
         $this->good_specs = proccess_spec($raw_specs);
         $this->m2m_add_actions();
-        print_r($this->good_specs);
     }
 
     protected function m2m_add_actions($actions="")
@@ -76,27 +75,31 @@ class M2M_Cust_Posts
                   $current_hook = $feilds['hook'];
                   $current_args = $feilds['args'];
                   $specs_by_hook[$current_hook][$cpt_name]['args'] = $current_args;
-                 /* $current_hook = $feilds['hook'];
-                  
-                  $resuffle +=  array(
-                    'cpt_name' => $cpt_name,
-                    'args'     => $current_args   
-                  );
-                  if (!array_key_exists($current_hook, $specs_by_hook)){
-                    $specs_by_hook[$current_hook]=array();
-                  }*/
                 }
             } else {
                 $err = "no good_specs";
             };
-          //print_r($specs_by_hook);
+            foreach ($specs_by_hook as $hook_to_process => $cpts){
+              add_action($hook_to_process,array($this, 'm2m_actions_responder'));
+              
+            }
           
         };
     }
-
+    
+    public function showSpecs(){
+      if (!is_admin() && isset($this -> good_specs)){
+        echo "<pre>";
+        print_r($this->good_specs);
+        echo "</pre>";
+      }else{
+        echo "<pre>no specs set</pre>";
+      }
+    }
 
     public function m2m_actions_responder()
     {
-        //$this->good_specs
+      $this->showSpecs();
+      echo "did my thing also";
     }
 }
