@@ -3,6 +3,7 @@ if (! defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
 require_once("M2M_Cust_Posts.php");
+include_once("M2M_Helpers.php");
 class M2M_Resu_ME
 {
     protected $path;
@@ -26,10 +27,10 @@ class M2M_Resu_ME
 
         //process the specs
         $m2m_builtCpt = new M2M_Cust_Posts($this->specs);
-        //M2M_Cust_Posts::m2m_add_actions();
 
-        add_action('init', array($this, 'm2m_resume_post_type'), 0);
-        add_action('init', array($this,'m2m_skill_post_type'), 0);
+
+        /*add_action('init', array($this, 'm2m_resume_post_type'), 0);
+        add_action('init', array($this,'m2m_skill_post_type'), 0);*/
         add_action('init', array($this, 'm2m_taxonomy_skillList'));
     } //__constuctor
     
@@ -63,7 +64,6 @@ class M2M_Resu_ME
         'filter_items_list'     => 'Filter items list',
       );
         $args = array(
-        'label'                 => 'Resume',
         'description'           => 'Master Post to hold the Resume together',
         'labels'                => $labels,
         'supports'              => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'revisions', 'custom-fields', 'page-attributes', 'post-formats', 'wpcom-markdown'),
@@ -81,7 +81,9 @@ class M2M_Resu_ME
         'exclude_from_search'   => false,
         'publicly_queryable'    => true,
         'capability_type'       => 'page',
+        'label'                 => 'Resume',
       );
+        //M2M_Helpers::showShit($args);
         register_post_type('resume', $args);
     }
 
@@ -149,45 +151,7 @@ class M2M_Resu_ME
       'query_var'         => true,
       'rewrite'           => ['slug' => 'skill_list'],
       ];
-        register_taxonomy('skillList', ['skill'], $args);
+        register_taxonomy('skillList', ['skills'], $args);
     }
 
-    private function write_specs($spec_name, $singular_name, $description) //utility fuction not for production
-    {
-        $file = __dir__.'/cpt_'.$spec_name.'_specs.json';
-        $labels = array(
-            'singular_name'         => $singular_name,
-        );
-        $args = array(
-            'description'           => $description,
-            'supports'              => array( 'title', 'editor', 'excerpt', 'author', 'revisions', 'custom-fields', 'wpcom-markdown'),
-            'taxonomies'            => array( 'Skills' ),
-            'hierarchical'          => false,
-            'public'                => false,
-            'show_ui'               => true,
-            'show_in_menu'          => true,
-            'menu_position'         => 6,
-            'menu_icon'                            => 'dashicons-editor-ul',
-            'show_in_admin_bar'     => true,
-            'show_in_nav_menus'     => false,
-            'can_export'            => true,
-            'has_archive'           => false,
-            'exclude_from_search'   => true,
-            'publicly_queryable'    => false,
-            'capability_type'       => 'page',
-        );
-        $specs = array(
-            $spec_name => array(
-                    'labels' => $labels,
-                    'args'    => $args,
-                    'hook'    => 'init'
-            )
-        );
-        if (!file_exists($file)) {
-            $toWrite = json_encode($specs, JSON_PRETTY_PRINT);
-            file_put_contents($file, $toWrite);
-        } else {
-            error_log($file.' already exists');
-        }
-    }
 }// end of class
