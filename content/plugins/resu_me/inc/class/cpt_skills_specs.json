@@ -1,6 +1,6 @@
 {
     "skills": {
-        "labels": {
+        "raw_labels": {
             "singular_name": "Skill"
         },
         "args": {

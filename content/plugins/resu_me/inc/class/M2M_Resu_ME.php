@@ -32,10 +32,7 @@ class M2M_Resu_ME
         add_action('init', array($this,'m2m_skill_post_type'), 0);
         add_action('init', array($this, 'm2m_taxonomy_skillList'));
     } //__constuctor
-    //TODO: build a "add_action privte methiod"
-
-
-
+    
     //TODO: build a "post_type facotry (maybe a different class file)
 
     public function m2m_resume_post_type()
@@ -155,7 +152,7 @@ class M2M_Resu_ME
         register_taxonomy('skillList', ['skill'], $args);
     }
 
-    private function write_specs($spec_name, $singular_name, $description)
+    private function write_specs($spec_name, $singular_name, $description) //utility fuction not for production
     {
         $file = __dir__.'/cpt_'.$spec_name.'_specs.json';
         $labels = array(

@@ -1,6 +1,6 @@
 {
     "achivements": {
-        "labels": {
+        "raw_labels": {
             "singular_name": "achivement"
         },
         "args": {

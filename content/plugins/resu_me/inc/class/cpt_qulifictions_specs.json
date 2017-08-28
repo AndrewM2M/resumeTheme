@@ -1,6 +1,6 @@
 {
     "qulifictions": {
-        "labels": {
+        "raw_labels": {
             "singular_name": "qulifiction"
         },
         "args": {
