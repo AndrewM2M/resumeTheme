@@ -3,7 +3,12 @@ if (! defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
 require_once("M2M_Cust_Posts.php");
+require_once("M2M_Resu_ME_Admin.php");
 include_once("M2M_Helpers.php");
+
+
+define ('M2MClassDir',__dir__);
+
 class M2M_Resu_ME
 {
     protected $path;
@@ -12,8 +17,9 @@ class M2M_Resu_ME
     public function __construct($plugin_path)
     {
         $this->plugin_path = $plugin_path;
+        define ("PLUGINPATH", $plugin_path);
         $m2m_cpts = array('resumes','achivements','experiences','skills','qulifictions'); //list of type files to look for
-        $m2m_specs_path = __dir__."/cpt_%s_specs.json";
+        $m2m_specs_path = M2MClassDir."/cpt_%s_specs.json";
 
         foreach ($m2m_cpts as $types) { //load the specs from the files
             $file = sprintf($m2m_specs_path, $types);
@@ -27,16 +33,13 @@ class M2M_Resu_ME
 
         //process the specs
         $m2m_builtCpt = new M2M_Cust_Posts($this->specs);
-
-
-        /*add_action('init', array($this, 'm2m_resume_post_type'), 0);
-        add_action('init', array($this,'m2m_skill_post_type'), 0);*/
         add_action('init', array($this, 'm2m_taxonomy_skillList'));
+        $m2m_admin = new M2M_Resu_ME_Admin;
+        $m2m_admin->m2m_add_admin_actions();
     } //__constuctor
     
-    //TODO: build a "post_type facotry (maybe a different class file)
 
-    public function m2m_resume_post_type()
+/*    public function m2m_resume_post_type()
     {
         $labels = array(
         'name'                  => 'Resumes',
@@ -128,7 +131,10 @@ class M2M_Resu_ME
         'capability_type'       => 'page',
     );
         register_post_type('skill', $args);
-    }
+    }*/
+  
+    
+  
     public function m2m_taxonomy_skillList()
     {
         $labels = [

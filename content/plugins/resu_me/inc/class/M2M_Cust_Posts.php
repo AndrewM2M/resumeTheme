@@ -85,71 +85,16 @@ class M2M_Cust_Posts
               add_action($hook_to_process,array($this, 'm2m_actions_responder'));
               
             }
-          
         };
     }
 
     public function m2m_actions_responder()
     {
-        $labels = array(
-        'name'                  => 'Resumes',
-        'singular_name'         => 'Resume',
-        'archives'              => 'Item Archives',
-        'attributes'            => 'Item Attributes',
-        'parent_item_colon'     => 'Parent Item:',
-        'all_items'             => 'All Items',
-        'add_new_item'          => 'Add New Item',
-        'add_new'               => 'Add New',
-        'new_item'              => 'New Item',
-        'edit_item'             => 'Edit Item',
-        'update_item'           => 'Update Item',
-        'view_item'             => 'View Item',
-        'view_items'            => 'View Items',
-        'search_items'          => 'Search Item',
-        'featured_image'        => 'Featured Image',
-        'set_featured_image'    => 'Set featured image',
-        'remove_featured_image' => 'Remove featured image',
-        'use_featured_image'    => 'Use as featured image',
-        'insert_into_item'      => 'Insert into item',
-        'uploaded_to_this_item' => 'Uploaded to this item',
-        'items_list'            => 'Items list',
-        'items_list_navigation' => 'Items list navigation',
-        'filter_items_list'     => 'Filter items list',
-      );
-        $testargs = array(
-        'description'           => 'Master Post to hold the Resume together',
-        'labels'                => $labels,
-        'supports'              => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'revisions', 'custom-fields', 'page-attributes', 'post-formats', 'wpcom-markdown'),
-        'taxonomies'            => array( 'Resumes' ),
-        'hierarchical'          => false,
-        'public'                => true,
-        'show_ui'               => true,
-        'show_in_menu'          => true,
-        'menu_position'         => 5,
-        'menu_icon'             => 'dashicons-format-aside',
-        'show_in_admin_bar'     => true,
-        'show_in_nav_menus'     => true,
-        'can_export'            => true,
-        'has_archive'           => true,
-        'exclude_from_search'   => false,
-        'publicly_queryable'    => true,
-        'capability_type'       => 'page',
-        'label'                 => 'Resume',
-      );
       $running_hook =  current_filter();
       $doings = $this->specs_by_hook[$running_hook];      
-      M2M_Helpers::showShit($doings);
       foreach ($doings as $tag => $args){
-        //M2M_Helpers::showShit($tag);
         $reg = $args['args'];
         register_post_type($tag, $reg);
       }
-      /*$tag = 'resumes';
-      $args = $doings[$tag]['args'];
-      //M2m_Helpers::showShit($doings[$tag]['args']);
-      register_post_type($tag, $args);
-     
-      //register_post_type($tag, $testargs);
-        */
     }
 }
