@@ -2,18 +2,15 @@
 if (! defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
-include_once ("M2M_Helpers.php");
+include_once(M2M_CLASS . 'M2M_Helpers.php');
 class M2M_Cust_Posts
 {
     public $good_specs;
     protected $specs_by_hook = array();
-
-    public function __construct($specs)
+    public function __construct($raw_specs)
     { //do not pass the lables array in the args array
         /* TODO: autobuild taxonomy option
         */
-        $raw_specs = $specs;
-
         function proccess_spec($raw)
         {
             foreach ($raw as $cpt_name => $details) {
@@ -87,7 +84,6 @@ class M2M_Cust_Posts
             }
         };
     }
-
     public function m2m_actions_responder()
     {
       $running_hook =  current_filter();

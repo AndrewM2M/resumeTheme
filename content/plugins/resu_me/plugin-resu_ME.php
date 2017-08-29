@@ -8,21 +8,25 @@ Author: Andrew White
 Author URI: 
 License: MIT
 */
-$plugin_path = plugin_dir_path(__file__);
-require_once ($plugin_path . "/inc/class/M2M_Resu_ME.php");
+if (! defined('ABSPATH')) {
+    exit;
+} // Exit if accessed directly
 
-$resu_ME = new M2M_Resu_ME($plugin_path);
+define ('M2M_PLUGINROOT', plugin_dir_path(__file__));
+define ('M2M_CLASS', M2M_PLUGINROOT . 'inc/class/');
+define ('M2M_VIWES', M2M_PLUGINROOT . 'views/');
+define ('M2M_SCRIPTS', M2M_PLUGINROOT . 'inc/scripts/');
+define ('M2M_LIB', M2M_PLUGINROOT . 'inc/lib/');
+				
+require_once (M2M_CLASS . "M2M_Resu_ME.php");
+
+$resu_ME = new M2M_Resu_ME();
 
 
 // Add Shortcode
 
 
-/***helpers***/
-function template_trace($file){
-	$filePathParts = pathinfo($file);
-	$trace = $filePathParts["dirname"] . "/" . $filePathParts["basename"];
-	echo "<pre>",$trace, "</pre>";
-}
+
 
 function m2m_render_part($id, $cust_feild_name, $custom_array = ['default']){
 	$custom_array = ['default'] ? get_post_custom($id) : $custom_array;

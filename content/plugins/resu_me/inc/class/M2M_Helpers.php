@@ -60,6 +60,12 @@ class M2M_Helpers {
       }
   }
   
+ static function template_trace($file){
+	$filePathParts = pathinfo($file);
+	$trace = $filePathParts["dirname"] . "/" . $filePathParts["basename"];
+	echo "<pre>",$trace, "</pre>";
+}
+  
 }// end of class
 
 ?>

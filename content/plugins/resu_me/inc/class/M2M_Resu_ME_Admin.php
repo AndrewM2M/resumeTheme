@@ -2,8 +2,9 @@
 if (! defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
-include_once("M2M_Helpers.php");
-  define ('ADMINVIEWS', PLUGINPATH ."/views/admin");
+
+include_once(M2M_CLASS . 'M2M_Helpers.php');
+
 class M2M_Resu_ME_Admin{  
   public function __constuctor(){
   
@@ -32,7 +33,7 @@ class M2M_Resu_ME_Admin{
     }
 
      function m2m_load_admin_view($part){    
-      include (ADMINVIEWS."meta-".$part);
+      include (M2M_VIWES ."admin/meta-$part.php");
   }
 }
 ?>

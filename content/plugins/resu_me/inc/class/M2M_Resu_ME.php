@@ -2,24 +2,19 @@
 if (! defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
-require_once("M2M_Cust_Posts.php");
-require_once("M2M_Resu_ME_Admin.php");
-include_once("M2M_Helpers.php");
 
-
-define ('M2MClassDir',__dir__);
+require_once(M2M_CLASS . 'M2M_Cust_Posts.php');
+require_once(M2M_CLASS . 'M2M_Resu_ME_Admin.php');
+include_once(M2M_CLASS . 'M2M_Helpers.php');
 
 class M2M_Resu_ME
-{
-    protected $path;
+{    
     protected $specs = array();
 
-    public function __construct($plugin_path)
+    public function __construct()
     {
-        $this->plugin_path = $plugin_path;
-        define ("PLUGINPATH", $plugin_path);
         $m2m_cpts = array('resumes','achivements','experiences','skills','qulifictions'); //list of type files to look for
-        $m2m_specs_path = M2MClassDir."/cpt_%s_specs.json";
+        $m2m_specs_path = M2M_CLASS ."config/cpt/cpt_%s_specs.json";
 
         foreach ($m2m_cpts as $types) { //load the specs from the files
             $file = sprintf($m2m_specs_path, $types);
