@@ -2,10 +2,9 @@
 if (! defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
-
 class M2M_Helpers {
-        
-  static function write_cpt_specs($spec_name, $singular_name, $description) //utility fuction not for production
+		protected static  $savedShit = array();
+    static function write_cpt_specs($spec_name, $singular_name, $description) //utility fuction not for production
     {
         $file = __dir__.'/cpt_'.$spec_name.'_specs.json';
         $labels = array(
@@ -31,9 +30,9 @@ class M2M_Helpers {
         );
         $specs = array(
             $spec_name => array(
-                    'labels' => $labels,
-                    'args'    => $args,
-                    'hook'    => 'init'
+                'labels' => $labels,
+                'args'    => $args,
+                'hook'    => 'init'
             )
         );
         if (!file_exists($file)) {
@@ -43,29 +42,51 @@ class M2M_Helpers {
             error_log($file.' already exists');
         }
     }
-  
-   static function showShit($shit){
-      if (!is_admin() && isset($shit)){
-        echo "<pre>";
-        print_r($shit);
-        echo "</pre>";
-      }
+    
+		static function showShit($shit){
+			if (!has_action('admin_notices','showShit')){
+            add_action( 'admin_notices', array('M2M_Helpers', 'showShit'),10);
+        }
+        $hook = current_filter();
+				if (did_action('init')){
+				if (function_exists('get_current_screen')){
+					if ($hook === 'admin_notices'){
+							$class ='notice notice-warning';
+						if (array_key_exists(get_current_screen()->post_type,self::$savedShit)){
+							$adminShit = self::$savedShit[get_current_screen()->post_type];
+							switch (gettype($adminShit)){
+									case 'string':
+									$message = $adminShit;
+									break;
+									default:
+									$message = wp_json_encode($adminShit);
+									break;
+							}
+							printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+						}
+					}else{
+						self::$savedShit[get_current_screen()->post_type] = $shit;
+					}
+				}
+				if (!is_admin()){
+					echo '<pre>' . print_r($shit) . '</pre>';
+        }
+				}else{
+					echo '<pre>' . print_r($shit) . '</pre>';
+				}
     }
-  static function showWPError($result){
-     if ( is_wp_error( $result ) ) {
-        $error_string = $result->get_error_message();
-        echo '<div id="message" class="error"><p>' . $error_string . '</p></div>';
-      }else{
-        echo '<div id="message" class="error"><p> sill nothing </p></div>';
-      }
-  }
-  
- static function template_trace($file){
-	$filePathParts = pathinfo($file);
-	$trace = $filePathParts["dirname"] . "/" . $filePathParts["basename"];
-	echo "<pre>",$trace, "</pre>";
-}
-  
+    static function showWPError($result){
+        if ( is_wp_error( $result ) ) {
+            $error_string = $result->get_error_message();
+            echo '<div id="message" class="error"><p>' . $error_string . '</p></div>';
+        }else{
+            echo '<div id="message" class="error"><p> sill nothing </p></div>';
+        }
+    }
+    static function template_trace($file){
+        $filePathParts = pathinfo($file);
+        $trace = $filePathParts["dirname"] . "/" . $filePathParts["basename"];
+        echo "<pre>",$trace, "</pre>";
+    }
 }// end of class
-
 ?>

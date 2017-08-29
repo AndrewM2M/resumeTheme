@@ -99,7 +99,9 @@ if (!defined('WP_CONTENT_DIR')) {
 if (!defined('WP_CONTENT_URL')) {
 	define('WP_CONTENT_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/content');
 }
-
+if (!defined('FS_METHOD')){
+	define('FS_METHOD', 'direct');
+}
 
 /**
  * For developers: WordPress debugging mode.

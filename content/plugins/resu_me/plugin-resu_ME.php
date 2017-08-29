@@ -22,7 +22,6 @@ require_once (M2M_CLASS . "M2M_Resu_ME.php");
 
 $resu_ME = new M2M_Resu_ME();
 
-
 // Add Shortcode
 
 

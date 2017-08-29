@@ -6,16 +6,14 @@ if (! defined('ABSPATH')) {
 require_once(M2M_CLASS . 'M2M_Cust_Posts.php');
 require_once(M2M_CLASS . 'M2M_Resu_ME_Admin.php');
 include_once(M2M_CLASS . 'M2M_Helpers.php');
-
 class M2M_Resu_ME
 {    
     protected $specs = array();
-
     public function __construct()
     {
         $m2m_cpts = array('resumes','achivements','experiences','skills','qulifictions'); //list of type files to look for
         $m2m_specs_path = M2M_CLASS ."config/cpt/cpt_%s_specs.json";
-
+        
         foreach ($m2m_cpts as $types) { //load the specs from the files
             $file = sprintf($m2m_specs_path, $types);
             if (file_exists($file)) {
@@ -30,7 +28,6 @@ class M2M_Resu_ME
         $m2m_builtCpt = new M2M_Cust_Posts($this->specs);
         add_action('init', array($this, 'm2m_taxonomy_skillList'));
         $m2m_admin = new M2M_Resu_ME_Admin;
-        $m2m_admin->m2m_add_admin_actions();
     } //__constuctor
     
 
