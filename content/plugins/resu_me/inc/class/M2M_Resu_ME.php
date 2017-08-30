@@ -11,7 +11,7 @@ class M2M_Resu_ME
     protected $specs = array();
     public function __construct()
     {
-        $m2m_cpts = array('resumes','achivements','experiences','skills','qulifictions'); //list of type files to look for
+        /*$m2m_cpts = array('resumes','achivements','experiences','skills','qulifictions'); //list of type files to look for
         $m2m_specs_path = M2M_CONFIG ."cpt/cpt_%s_specs.json";
         
         foreach ($m2m_cpts as $types) { //load the specs from the files
@@ -22,11 +22,11 @@ class M2M_Resu_ME
             } else {
                 error_log('no JSON file: "'.$file.'"');
             }
-        }
+        }*/
 
         //process the specs
         //$m2m_builtCpt = new M2M_Cust_Posts($this->specs);
-        add_action('init', array($this, 'm2m_taxonomy_skillList'));
+        //add_action('init', array($this, 'm2m_taxonomy_skillList'));
         $m2m_admin = new M2M_Resu_ME_Admin;
     } //__constuctor
     
@@ -130,16 +130,16 @@ class M2M_Resu_ME
     public function m2m_taxonomy_skillList()
     {
         $labels = [
-      'name'              => _x('Skill lists', 'taxonomy general name'),
-      'singular_name'     => _x('Skill list', 'taxonomy singular name'),
-      'search_items'      => __('Search Skill lists'),
-      'all_items'         => __('All Skill lists'),
-      'parent_item'       => __('Parent Skill list'),
-      'parent_item_colon' => __('Parent Skill list:'),
-      'edit_item'         => __('Edit Skill list'),
-      'update_item'       => __('Update Skill list'),
-      'add_new_item'      => __('Add New Skill list'),
-      'new_item_name'     => __('New Skill list Name'),
+      'name'              => _x('Skill Lists', 'taxonomy general name'),
+      'singular_name'     => _x('Skill List', 'taxonomy singular name'),
+      'search_items'      => __('Search Skill Lists'),
+      'all_items'         => __('All Skill Lists'),
+      'parent_item'       => __('Parent Skill List'),
+      'parent_item_colon' => __('Parent Skill List:'),
+      'edit_item'         => __('Edit Skill List'),
+      'update_item'       => __('Update Skill List'),
+      'add_new_item'      => __('Add New Skill List'),
+      'new_item_name'     => __('New Skill List Name'),
       ];
         $args = [
       'hierarchical'      => true, // make it hierarchical (like categories)
@@ -149,7 +149,7 @@ class M2M_Resu_ME
       'query_var'         => true,
       'rewrite'           => ['slug' => 'skill_list'],
       ];
-        register_taxonomy('skillList', ['skills'], $args);
+        register_taxonomy('skill_list', ['skills'], $args);
     }
 
 }// end of class
