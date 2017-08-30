@@ -58,5 +58,9 @@ wp-content/plugins/hello.php
 /readme.html
 /sitemap.xml
 /sitemap.xml.gz
+#WP Debug
+content/pulgings/debug-bar
+content/pulgings/debug-bar-actions-and-filters-addon
+content/pulgings/debug-bar-post-types
 >>>>>>> acfc298b3b6a7d3af895bbedbeec6e7bd3dbbd9d
 
