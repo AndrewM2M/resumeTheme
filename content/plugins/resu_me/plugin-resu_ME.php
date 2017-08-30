@@ -17,6 +17,7 @@ define ('M2M_CLASS', M2M_PLUGINROOT . 'inc/class/');
 define ('M2M_VIWES', M2M_PLUGINROOT . 'views/');
 define ('M2M_SCRIPTS', M2M_PLUGINROOT . 'inc/scripts/');
 define ('M2M_LIB', M2M_PLUGINROOT . 'inc/lib/');
+define ('M2M_CONFIG', M2M_PLUGINROOT . 'config/');
 				
 require_once (M2M_CLASS . "M2M_Resu_ME.php");
 

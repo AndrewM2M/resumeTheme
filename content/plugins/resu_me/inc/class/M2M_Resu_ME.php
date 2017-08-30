@@ -12,7 +12,7 @@ class M2M_Resu_ME
     public function __construct()
     {
         $m2m_cpts = array('resumes','achivements','experiences','skills','qulifictions'); //list of type files to look for
-        $m2m_specs_path = M2M_CLASS ."config/cpt/cpt_%s_specs.json";
+        $m2m_specs_path = M2M_CONFIG ."cpt/cpt_%s_specs.json";
         
         foreach ($m2m_cpts as $types) { //load the specs from the files
             $file = sprintf($m2m_specs_path, $types);
@@ -25,7 +25,7 @@ class M2M_Resu_ME
         }
 
         //process the specs
-        $m2m_builtCpt = new M2M_Cust_Posts($this->specs);
+        //$m2m_builtCpt = new M2M_Cust_Posts($this->specs);
         add_action('init', array($this, 'm2m_taxonomy_skillList'));
         $m2m_admin = new M2M_Resu_ME_Admin;
     } //__constuctor
