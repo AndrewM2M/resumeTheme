@@ -1,0 +1,36 @@
+{
+    "experiences": {
+        "raw_labels": {
+            "singular_name": "Experience"
+        },
+        "args": {
+            "description": "Things you have done, places worked... you know, the past.",
+            "supports": [
+                "title",
+                "editor",
+                "excerpt",
+                "author",
+                "revisions",
+                "custom-fields",
+                "wpcom-markdown"
+            ],
+            "taxonomies": [
+                "Skills"
+            ],
+            "hierarchical": false,
+            "public": false,
+            "show_ui": true,
+            "show_in_menu": true,
+            "menu_position": 6,
+            "menu_icon": "dashicons-editor-ul",
+            "show_in_admin_bar": true,
+            "show_in_nav_menus": false,
+            "can_export": true,
+            "has_archive": false,
+            "exclude_from_search": true,
+            "publicly_queryable": false,
+            "capability_type": "page"
+        },
+        "hook": "init"
+    }
+}
