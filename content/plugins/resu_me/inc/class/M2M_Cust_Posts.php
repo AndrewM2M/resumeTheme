@@ -10,23 +10,13 @@ include_once(M2M_CLASS . 'M2M_Helpers.php');
 
 use PostTypes\PostType;
 
-/*
-make of list of CPT names
-look for config files
-if config exisits
-  load config
-else
-  pass name
+  $cpts = array(); // array of CPT Objects
+  $cpt_files = array(); // array of CPT configs loaded from files
   
-return array('[cpt_name]':config(
-        'raw_labels' => array(),
-        'args'      => array(),
-        
-*/
-$cpts = array(); // array of CPT Objects
-$m2m_cpt_names = array('resume','achivement','experience','skill','qulifiction');
-function m2m_get_cpts($names){
-  $cpt_files = array();
+  $m2m_cpt_names = array('resume','achivement','experience','skill','qulifiction'); // the CPT to use
+  
+  function m2m_get_cpts($names){
+  $cpt_files = array(); // array of CPT configs loaded from files
   //$m2m_cpt_dir = new DirectoryIterator(M2M_CPT_CONFIG);
   $m2m_specs_mask = M2M_CPT_CONFIG ."cpt_%s_specs.json";
      foreach ($names as $value) { //load the specs from the files
@@ -39,30 +29,25 @@ function m2m_get_cpts($names){
             $cpt_files[$value] = '';
         }
       }
-      
- /*foreach ($m2m_cpt_dir as $fileinfo) {
-    if (!$fileinfo->isDot()) {
-        array_push($cpt_files,$fileinfo->getFilename());
-    };
-  }
-  $cpt_files = preg_grep('/cpt_.*_specs.json/',$cpt_files);*/
   return $cpt_files;
 }
+
 $m2m_cpt_specs = m2m_get_cpts($m2m_cpt_names);
 
 foreach ($m2m_cpt_specs as $name => $specs){
   $cpts[$name] = new PostType($name);
   if ($specs != ''){
-      $cpt_taxes = $specs['args']['taxonomies'];
+      /*$cpt_taxes = $specs['args']['taxonomies'];
       foreach ($cpt_taxes as $tax_names){
         $cpts[$name]->taxonomy($tax_names);
-      }
-    /*foreach ($specs as $key => $details){
+      }*/
+    foreach ($specs as $key => $details){
       switch ($key){
         case 'raw_labels':
+            
           break;
       }
-    }*/
+    }
   }
 }
 

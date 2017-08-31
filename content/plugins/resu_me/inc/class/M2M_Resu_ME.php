@@ -6,11 +6,13 @@ if (! defined('ABSPATH')) {
 require_once(M2M_CLASS . 'M2M_Cust_Posts.php');
 require_once(M2M_CLASS . 'M2M_Resu_ME_Admin.php');
 include_once(M2M_CLASS . 'M2M_Helpers.php');
+
 class M2M_Resu_ME
 {    
     protected $specs = array();
     public function __construct()
     {
+      //M2M();
         /*$m2m_cpts = array('resumes','achivements','experiences','skills','qulifictions'); //list of type files to look for
         $m2m_specs_path = M2M_CONFIG ."cpt/cpt_%s_specs.json";
         

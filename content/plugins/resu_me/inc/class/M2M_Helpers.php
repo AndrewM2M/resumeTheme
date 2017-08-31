@@ -3,7 +3,7 @@ if (! defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
 class M2M_Helpers {
-		protected static  $savedShit = array();
+		protected static  $savedMessages = array();
     static function write_cpt_specs($spec_name, $singular_name, $description) //utility fuction not for production
     {
         $file = __dir__.'/cpt_'.$spec_name.'_specs.json';
@@ -42,7 +42,17 @@ class M2M_Helpers {
             error_log($file.' already exists');
         }
     }
-    
+  
+		static private function message_logger(){
+			/*to gather messages to be displayed via various WP compatiable output methods
+			will need to store:
+				index
+				the message
+				where to be displayed (screen, post, debug.log)
+				how to be displayed (admin_notices, shortcode, written to log, other???)			
+			*/
+		}
+	
 		static function showShit($shit){
 			if (!has_action('admin_notices','showShit')){
             add_action( 'admin_notices', array('M2M_Helpers', 'showShit'),10);
