@@ -1,9 +1,20 @@
 <?php namespace M2M;
-define ('ABSPATH', TRUE);
+ini_set('error_log', 'debug.log');
+
 class M2M {
   
   //invoker that kicks us off **it all starts here baby***
   public static function start(){
+    $settings = func_get_args();
+    $wp_dir = null;
+    if (array_key_exists('fakeWP',$settings)){
+      $wp_dir = rtrim ($settings['fakeWP'],'/');     
+    }elseif (in_array ('fakeWP', $settings)){
+      $wp_dir = dirname(__FILE__) . '/';
+    }
+    if (empty($wp_dir)){
+      define('ABSPATH', $wp_dir. '/');
+    };
     if (self::isWP()){
       self::run_wp_config();
     }
@@ -37,6 +48,11 @@ static private function  whatami(){
       switch ($config_type) {
         case 'plugin':
           self::plugin_config();
+          break;
+          
+        default: 
+          error_log("M2M Error: 'Crisis of Identity' - Apparently Im a $config_type, but I don't now what that is!");
+          break;
       }
     ?>
       <ul>
