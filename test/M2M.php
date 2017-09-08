@@ -43,8 +43,6 @@ class M2M
             echo 'runing conifg';
             self::run_wp_config();
         } else {echo 'not WP';}
-
-        $message_log = new M2M_MESSAGE_QUE;
     }
 
     private static function isWP()

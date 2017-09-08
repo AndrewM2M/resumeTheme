@@ -44,7 +44,5 @@ require_once BASE . 'M2M_DEPEND.php';
 $dependentcies = array(
 	'lib'		=>  	'/home/andrew/Documents/work/resumeTheme/content/plugins/resu_me/inc/lib/vendor/'
 	);
-print_r(M2M_DEPEND::check($dependentcies));
-$configMessages = new M2M_MESSAGES;
-var_dump($configMessages);
+M2M_DEPEND::check($dependentcies);
 ?>

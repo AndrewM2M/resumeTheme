@@ -1,6 +1,6 @@
 <?php 
 use M2M\M2M;
-
+//require_once BASE . 'M2M_MESSAGES.php';
 if (M2M::isWP()) {
     M2M::WP_safety();
 }
@@ -9,10 +9,10 @@ if (M2M::isWP()) {
 
 class M2M_DEPEND{
 	static public function check($dependencies = ''){
-		$list = array();
+		$check_list = new M2M_MESSAGES;
 		if ($dependencies == ''){
 			if (array_key_exists('dependencies', M2M::settings)){
-				$dependencies = M2M::settings['dependencies'];
+				$dependencies = M2M::$settings['dependencies'];
 			}else{
 			$list = FALSE;
 			}
@@ -22,12 +22,21 @@ class M2M_DEPEND{
 			$file = pathinfo($path,PATHINFO_BASENAME);
 			echo $path;
 			if (file_exists($path)){
-				$list[$file] = 'found';
+				$list = array(
+					'type'	=>	'notice',
+					'text'	=>	$file . 'found',
+				);
+			
 			}else{
-				$list[$file] = 'missing';
+				$list = array(
+					'type'	=>	'error',
+					'text'	=>	$file . 'missing',
+				);
 			}	
 		}
-		return $list;
+		$check_list->set($list);
+		var_dump($check_list);
+		$check_list->check_que();
 	}
 }
 

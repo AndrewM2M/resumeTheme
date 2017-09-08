@@ -1,6 +1,6 @@
 <?php
 use M2M\M2M;
-
+require_once BASE . 'M2M_MESSAGE_QUE.php';
 if (M2M::isWP()) {
     M2M::WP_safety();
 }
@@ -9,8 +9,24 @@ class M2M_MESSAGES
 {
 
     private $settings = array();
-
-    public function __construct($param = null)
+    public $type;
+    public $text;
+    private $que;
+  
+  public function check_que(){
+    var_dump ($this->que);
+  }
+  
+  private function isGood(){
+        return (!empty($this->type) && !empty($this->text)) ? TRUE:FALSE;
+  }
+  
+  private function add(){
+    if ($this->isGood()) {
+    $this->que->add($this);
+  }  
+  }
+  public function __construct($message = '')
     {
         if (array_key_exists('M2M_MESSAGES', M2M::$M2M_settings)) {
             $def_set = M2M::$M2M_settings['M2M_MESSAGES'];
@@ -23,28 +39,29 @@ class M2M_MESSAGES
                 array_push($this->settings, $def_set);
             }
         }
-    } // end __construct
-
-    private function set_message($message)
-    {
-
-    }
-
-}
-class M2M_MESSAGE_QUE
-{
-    public static $instance;
-    private static $messages = array();
-    public function __construct()
-    {
-        if ($instance === null) {
-            self::$instance = $this;
+      $this->que = M2M_MESSAGE_QUE::get_que();
+      if ($message !== ''){
+        $this->set($message);
+      }
+  }
+  public function set($message){
+      if (is_array($message)){
+        foreach ($message as $key => $value){
+          switch ($key){
+            case 'type':
+              $this -> type = $value;
+              break;
+            case 'text':
+              $this -> text = $value;
+              break;
+            default:
+              error_log($key . 'is unknown message property');
+          }
         }
-        return self::$instance;
+      }else{
+          error_log('bad message');
+      }
+    $this -> add();
     }
-
-    public function add($message)
-    {
-    	self::$messages += $message;
-    }
-}
+  
+    } // end __construct
