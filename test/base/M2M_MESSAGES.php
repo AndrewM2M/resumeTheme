@@ -14,7 +14,7 @@ class M2M_MESSAGES
     private $que;
   
   public function check_que(){
-    var_dump ($this->que);
+    var_dump ($this->que->show());
   }
   
   private function isGood(){
@@ -23,9 +23,9 @@ class M2M_MESSAGES
   
   private function add(){
     if ($this->isGood()) {
-    echo 'is good';
     $this->que->add($this);
   }  
+    
   }
   public function __construct($message = '')
     {

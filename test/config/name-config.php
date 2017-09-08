@@ -1,12 +1,12 @@
 <?php
 use M2M\M2M;
-
 if (M2M::isWP()) {
     M2M::WP_safety();
 }
 ;
-
+echo __NAMESPACE__;
 ?>
+
 <ul>
 	<li>Identify what we are (plugin/theme/other??) &#x2714;</li>
     <li>Find what we are called. &#x2714;</li>
@@ -42,7 +42,7 @@ if (M2M::isWP()) {
 <?php
 require_once BASE . 'M2M_DEPEND.php';
 $dependentcies = array(
-	'lib'		=>  	'/home/andrew/Documents/work/resumeTheme/content/plugins/resu_me/inc/lib/vendor/'
+	'lib'		=>  	WP_PLUGIN_DIR . '/resu_me/inc/lib/vendor/'
 	);
 M2M_DEPEND::check($dependentcies);
 ?>

@@ -21,11 +21,14 @@ class M2M_MESSAGE_QUE
         }
       return self::$instance;
     }
+    
+    public function show(){
+      return self::$messages;
+    }
   
     public function add($message)
     {
       array_push(self::$messages,$message);
-      var_dump(self::$messages);
     }
 }
 ?>

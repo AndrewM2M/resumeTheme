@@ -19,23 +19,21 @@ class M2M_DEPEND{
 		}
 
 		foreach ($dependencies as $path) {
-			$file = pathinfo($path,PATHINFO_BASENAME);
-			echo $path;
+			$file = pathinfo($path , PATHINFO_BASENAME);
 			if (file_exists($path)){
 				$list = array(
 					'type'	=>	'notice',
-					'text'	=>	$file . 'found',
+					'text'	=>	$file . ' found',
 				);
 			
 			}else{
 				$list = array(
 					'type'	=>	'error',
-					'text'	=>	$file . 'missing',
+					'text'	=>	$file . ' missing',
 				);
 			}	
 		}
 		$check_list->set($list);
-		var_dump($check_list);
 		$check_list->check_que();
 	}
 }

@@ -5,6 +5,7 @@ class M2M
 {
 
     static $M2M_settings = array(
+        'isfakeWP'    => FALSE,
         'M2M_MESSAGES'      =>      array(
             'option1'   =>    'thing',
 
@@ -57,6 +58,7 @@ class M2M
             } elseif (in_array('fakeWP', self::$M2M_settings)) {
                 echo "Fake WP option detected, ";
                 $wp_dir = dirname(__FILE__);
+                self::$M2M_settings['isfakeWP']   =   TRUE;
             } else {
                 echo 'oops ';
 
@@ -113,6 +115,9 @@ class M2M
         define('ROOT', dirname(__FILE__) . '/');
         define('BASE', ROOT . 'base/');
         define('CONFIG', ROOT . 'config/');
+        //if (self::$M2M_settings['isfakeWP']){
+          define('WP_PLUGIN_DIR', '../content/plugins' );
+        //}
     }
     private static function do_requires(){
         require_once BASE . 'M2M_MESSAGES.php';
