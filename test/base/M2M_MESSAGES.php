@@ -23,6 +23,7 @@ class M2M_MESSAGES
   
   private function add(){
     if ($this->isGood()) {
+    echo 'is good';
     $this->que->add($this);
   }  
   }

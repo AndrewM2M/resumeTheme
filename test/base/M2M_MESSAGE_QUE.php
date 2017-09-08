@@ -25,6 +25,7 @@ class M2M_MESSAGE_QUE
     public function add($message)
     {
       array_push(self::$messages,$message);
+      var_dump(self::$messages);
     }
 }
 ?>
